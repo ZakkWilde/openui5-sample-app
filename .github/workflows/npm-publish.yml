@@ -1,0 +1,32 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+
+name: SAP UI5 Ci Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Clonar repositório
+        uses: actions/checkout@v4
+
+      - name: 🧰 Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          
+      - name: 📦 Instalar dependências
+        run: npm install
+      - run: npm ci
+      
+      - name: ✅ Rodar testes unitários
+      - run: npm test
+
+      - name: 🔧 Build da aplicação
+        run: npm run build
